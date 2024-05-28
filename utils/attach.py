@@ -1,14 +1,15 @@
+import allure
+from allure_commons.types import AttachmentType
 
-from demoqa_tests.pages.left_panel import LeftPanel
-from demoqa_tests.pages.registration_form import RegistrationForm
-from demoqa_tests.pages.simple_registration_form import SimpleRegistrationForm
+def add_screenshot(browser):
+    png = browser.driver.get_screenshot_as_png()
+    allure.attach(body=png, name='screenshot', attachment_type=AttachmentType.PNG, extension='.png')
 
+def add_logs(browser):
+    log = "".join(f'{text}\n' for text in browser.driver.get_log(log_type='browser'))
+    allure.attach(log, 'browser_logs', AttachmentType.TEXT, '.log')
 
-class ApplicationManager:
-    def __init__(self):
-        self.simple_registration = SimpleRegistrationForm()
-        self.left_panel = LeftPanel()
-        self.registration = RegistrationForm()
+def add_html(browser):
+    html = browser.driver.page_source
+    allure.attach(html, 'page_source', AttachmentType.HTML, 'html')
 
-
-app = ApplicationManager()
